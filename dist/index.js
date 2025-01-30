@@ -57,6 +57,7 @@ app.post('/api/v1/signin', (req, res) => __awaiter(void 0, void 0, void 0, funct
         });
     }
 }));
+2;
 app.post('/api/v1/content', middleware_1.userMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const type = req.body.type;
     const link = req.body.link;
@@ -81,8 +82,17 @@ app.get('/api/v1/content', middleware_1.userMiddleware, (req, res) => __awaiter(
         content
     });
 }));
-app.delete('/api/v1/content', (req, res) => {
-});
+app.delete('/api/v1/content', middleware_1.userMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const contentId = req.body.contentId;
+    yield db_1.ContentModel.deleteMany({
+        _id: contentId,
+        //@ts-ignore
+        userId: req.userId
+    });
+    res.json({
+        message: "Delete content"
+    });
+}));
 app.post('/api/v1/brain/share', (req, res) => {
 });
 app.get('/api/v1/brain/:sharelink', (req, res) => {
